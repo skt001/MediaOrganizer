@@ -1,0 +1,27 @@
+-charset
+filename=utf8
+-m
+-P
+-overwrite_original
+-ext+
+acr
+-ext+
+cur
+-ext+
+ico
+-ext+
+pict
+-ext+
+pcx
+-ext+
+djvu
+-ext+
+sketch
+-ext+
+3fr
+-ext+
+k25
+-if
+$MIMEType =~ /^image\// and (not $DateTimeOriginal and not $CreateDate and not $FileModifyDate and not $Model)
+-Directory<Photos/NoDate/Unknown
+-FileName<00000000_000000%-c.%e
