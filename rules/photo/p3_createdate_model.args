@@ -23,5 +23,5 @@ sketch
 k25
 -if
 $MIMEType =~ /^image\// and ($CreateDate =~ /[1-9]/ and $Model)
--Directory<Photos/${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,14):"";$_=$_?substr($_,0,4)."-".substr($_,4,2):"NoDate"}/${Model;s/[\\\/:*?"<>|]/_/g}
+-Directory<Photos/${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,14):"";$_=$_?substr($_,0,4)."-".substr($_,4,2):"NoDate"}/${GeolocationCountry;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"NoLocation"}/${GeolocationRegion;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/${GeolocationCity;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/${Model;s/[\\\/:*?"<>|]/_/g}
 -FileName<${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,14):"";$_=$_?substr($_,0,8)."_".substr($_,8,6):"00000000_000000"}${SubSecTime;$_="_".$_ if $_}%-c.%e

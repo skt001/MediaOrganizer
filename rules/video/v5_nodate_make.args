@@ -39,5 +39,5 @@ m2t
 ts
 -if
 $MIMEType =~ /^video\// and (not $CreateDate and not $FileModifyDate and $Make)
--Directory<Movies/NoDate/${Make;s/[\\\/:*?"<>|]/_/g}
+-Directory<Movies/NoDate/${GeolocationCountry;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"NoLocation"}/${GeolocationRegion;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/${GeolocationCity;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/${Make;s/[\\\/:*?"<>|]/_/g}
 -FileName<00000000_000000%-c.%e

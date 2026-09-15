@@ -23,5 +23,5 @@ sketch
 k25
 -if
 $MIMEType =~ /^image\// and (not $DateTimeOriginal and not $CreateDate and not $FileModifyDate and not $Model)
--Directory<Photos/NoDate/Unknown
+-Directory<Photos/NoDate/${GeolocationCountry;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"NoLocation"}/${GeolocationRegion;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/${GeolocationCity;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/Unknown
 -FileName<00000000_000000%-c.%e

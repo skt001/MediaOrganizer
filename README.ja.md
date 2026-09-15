@@ -1,12 +1,13 @@
 # MediaOrganizer
 
-[exiftool](https://exiftool.org/) と [czkawka](https://github.com/qarmin/czkawka) を使って、写真・動画を日付・機種名で自動整理する Windows バッチツールです。
+[exiftool](https://exiftool.org/) と [czkawka](https://github.com/qarmin/czkawka) を使って、写真・動画を日付・撮影地・機種名で自動整理する Windows バッチツールです。
 
 ## 機能
 
 - **重複削除** — ハッシュ完全一致による重複削除 + 視覚的類似画像の削除（czkawka）
-- **メタデータ整理** — EXIF 情報をもとに `Photos/` / `Movies/` へ日付・機種名で振り分け
+- **メタデータ整理** — EXIF 情報をもとに `Photos/` / `Movies/` へ日付・撮影地・機種名で振り分け
 - **優先度ルール** — `DateTimeOriginal` → `CreateDate` → `FileModifyDate` → `NoDate` の順にフォールバック
+- **撮影地フォルダ** — GPS があるファイルは ExifTool Geolocation で `国/都道府県/市区町村` を追加。無い場合は `NoLocation`（番地までの住所にはならない）
 - **小文字化** — NTFS の無音スキップ問題を一時名経由方式で回避して確実に小文字化
 - **空フォルダ削除** — 整理後に残った空フォルダを再帰削除
 - **一括実行** — `run_all.bat` 1本で全工程を順に実行
@@ -36,7 +37,7 @@
 ## 必要なもの
 
 - Windows 10 以降
-- [exiftool.exe](https://exiftool.org/) — `MediaOrganizer/` に配置
+- [exiftool.exe](https://exiftool.org/) 12.82 以降 — `MediaOrganizer/` に配置（Geolocation 機能が必要）
 - [czkawka_cli.exe](https://github.com/qarmin/czkawka/releases) — `MediaOrganizer/` に配置
 
 ## 使い方
@@ -53,20 +54,37 @@
 
 ## 整理後の構造
 
+GPS がある場合（地名は日本語）:
+
 ```
 Photos/
 └── 2024-03/
-    └── iPhone 15 Pro/
-        └── 20240315_143022.jpg
+    └── 日本/
+        └── 東京都/
+            └── 渋谷/
+                └── iPhone 15 Pro/
+                    └── 20240315_143022.jpg
 
 Movies/
 └── 2024-03/
-    └── Apple/
-        └── 20240315_150000.mp4
+    └── 日本/
+        └── 東京都/
+            └── 渋谷/
+                └── Apple/
+                    └── 20240315_150000.mp4
+```
 
-Photos/NoDate/Unknown/
+GPS が無い場合:
+
+```
+Photos/2024-03/NoLocation/Unknown/Unknown/iPhone 15 Pro/
+    └── 20240315_143022.jpg
+
+Photos/NoDate/NoLocation/Unknown/Unknown/Unknown/
     └── 00000000_000000_1.jpg
 ```
+
+撮影地フォルダは GPS 座標から最寄り都市を引いたもので、フォルダ名に位置が残ります。ExifTool はメタデータへ住所を書き込みません。
 
 ## ライセンス
 
