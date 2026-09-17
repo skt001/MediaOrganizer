@@ -2,7 +2,7 @@
 
 A Windows batch tool to automatically organize photos and videos by date, shooting location, and device model using [exiftool](https://exiftool.org/) and [czkawka](https://github.com/qarmin/czkawka).
 
-[日本語版 README はこちら](README.ja.md)
+[Japanese README](README.ja.md)
 
 ## Features
 

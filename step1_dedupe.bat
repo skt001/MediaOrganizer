@@ -1,70 +1,70 @@
 @echo off
 chcp 65001 > nul
 
-REM ==== パス設定 ====
+REM ==== Paths ====
 set SCRIPT_DIR=%~dp0
 cd /d "%SCRIPT_DIR%.."
 set WORK_DIR=%CD%
 set UNSORTED=%WORK_DIR%\Unsorted
 set CZKAWKA=%SCRIPT_DIR%czkawka_cli.exe
 
-REM ==== 環境チェック ====
+REM ==== Checks ====
 if not exist "%UNSORTED%" (
-    echo エラー: Unsortedフォルダが見つかりません: %UNSORTED%
+    echo Error: Unsorted folder not found: %UNSORTED%
     pause & exit /b 1
 )
 if not exist "%CZKAWKA%" (
-    echo エラー: czkawka_cli.exe が見つかりません: %CZKAWKA%
+    echo Error: czkawka_cli.exe not found: %CZKAWKA%
     pause & exit /b 1
 )
 
-REM ==== ヘッダー表示 ====
+REM ==== Header ====
 echo.
 echo ====================================
-echo    Step 1: 重複ファイル削除
+echo    Step 1: Remove duplicates
 echo ====================================
-echo 作業フォルダ: %WORK_DIR%
-echo 開始時刻: %DATE% %TIME%
+echo Work folder: %WORK_DIR%
+echo Start: %DATE% %TIME%
 echo ====================================
 echo.
 
-REM ==== [1/2] ハッシュ完全一致による重複削除 ====
-echo [1/2] ハッシュ完全一致の重複ファイルを削除します
+REM ==== [1/2] Exact-hash duplicates ====
+echo [1/2] Removing exact-hash duplicate files
 "%CZKAWKA%" dup --directories "%UNSORTED%" -D AEB
 echo.
 
-REM ==== [2/2] 視覚的類似画像の削除 (要確認) ====
-echo [2/2] 視覚的類似画像の削除
+REM ==== [2/2] Visually similar images (confirm first) ====
+echo [2/2] Remove visually similar images
 echo.
-echo  警告: この処理は露出違い・トリミング違いの画像も削除対象になる場合があります。
-echo  実行前にリストを確認することを推奨します。
+echo  Warning: This may also match exposure/crop variants.
+echo  Review the list before deleting.
 echo.
-echo  [D] ドライラン実行（削除リストを表示するだけ）
-echo  [Y] 削除を実行
-echo  [S] この工程をスキップ
+echo  [D] Dry run (list only, no delete)
+echo  [Y] Delete
+echo  [S] Skip this step
 echo.
-set /p CHOICE="選択してください (D/Y/S): "
+set /p CHOICE="Choose (D/Y/S): "
 
 if /i "%CHOICE%"=="D" (
-    echo ドライランを実行します（削除は行いません）...
+    echo Running dry run (no files deleted)...
     "%CZKAWKA%" image --directories "%UNSORTED%"
     echo.
-    echo ドライラン完了。上記リストを確認後、再度実行して Y を選択してください。
+    echo Dry run done. Review the list, then run again and choose Y.
 )
 if /i "%CHOICE%"=="Y" (
-    echo 類似画像の削除を実行します...
+    echo Deleting similar images...
     "%CZKAWKA%" image --directories "%UNSORTED%" -D AEB
 )
 if /i "%CHOICE%"=="S" (
-    echo 類似画像削除をスキップしました。
+    echo Skipped similar-image deletion.
 )
 
 echo.
 
-REM ==== フッター表示 ====
+REM ==== Footer ====
 echo ====================================
-echo    Step 1: 重複削除 完了
+echo    Step 1: Dedupe complete
 echo ====================================
-echo 終了時刻: %DATE% %TIME%
+echo End: %DATE% %TIME%
 echo.
 pause

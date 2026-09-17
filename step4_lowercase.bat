@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 > nul
 
-REM ==== パス設定 ====
+REM ==== Paths ====
 set SCRIPT_DIR=%~dp0
 cd /d "%SCRIPT_DIR%.."
 set WORK_DIR=%CD%
@@ -9,32 +9,32 @@ set PHOTOS=%WORK_DIR%\Photos
 set MOVIES=%WORK_DIR%\Movies
 set UNSORTED=%WORK_DIR%\Unsorted
 
-REM ==== 環境チェック ====
-if not exist "%PHOTOS%"   echo 警告: Photosフォルダが見つかりません
-if not exist "%MOVIES%"   echo 警告: Moviesフォルダが見つかりません
-if not exist "%UNSORTED%" echo 警告: Unsortedフォルダが見つかりません
+REM ==== Checks ====
+if not exist "%PHOTOS%"   echo Warning: Photos folder not found
+if not exist "%MOVIES%"   echo Warning: Movies folder not found
+if not exist "%UNSORTED%" echo Warning: Unsorted folder not found
 
 if not exist "%PHOTOS%" if not exist "%MOVIES%" if not exist "%UNSORTED%" (
-    echo エラー: 処理対象フォルダがすべて存在しません
+    echo Error: none of the target folders exist
     pause & exit /b 1
 )
 
-REM ==== ヘッダー表示 ====
+REM ==== Header ====
 echo.
 echo ====================================
-echo    Step 4: ファイル名小文字化
+echo    Step 4: Lowercase filenames
 echo ====================================
-echo 作業フォルダ: %WORK_DIR%
-echo 開始時刻: %DATE% %TIME%
+echo Work folder: %WORK_DIR%
+echo Start: %DATE% %TIME%
 echo ====================================
 echo.
 
-REM NTFSは大文字小文字を区別しないため、直接リネームは無視される。
-REM 一時名を経由することで確実に小文字化する。
+REM NTFS is case-insensitive, so a direct rename is a no-op.
+REM Rename via a temp name so the case actually changes.
 REM  ABC.jpg -> ABC.jpg.__tmp__ -> abc.jpg
 
 if exist "%PHOTOS%" (
-    echo [1/3] Photosフォルダ処理
+    echo [1/3] Photos
     powershell -NoProfile -Command ^
         "Get-ChildItem -LiteralPath '%PHOTOS%' -Recurse -File | ForEach-Object {" ^
         "  $lower = $_.Name.ToLower();" ^
@@ -48,7 +48,7 @@ if exist "%PHOTOS%" (
 )
 
 if exist "%MOVIES%" (
-    echo [2/3] Moviesフォルダ処理
+    echo [2/3] Movies
     powershell -NoProfile -Command ^
         "Get-ChildItem -LiteralPath '%MOVIES%' -Recurse -File | ForEach-Object {" ^
         "  $lower = $_.Name.ToLower();" ^
@@ -62,7 +62,7 @@ if exist "%MOVIES%" (
 )
 
 if exist "%UNSORTED%" (
-    echo [3/3] Unsortedフォルダ処理
+    echo [3/3] Unsorted
     powershell -NoProfile -Command ^
         "Get-ChildItem -LiteralPath '%UNSORTED%' -Recurse -File | ForEach-Object {" ^
         "  $lower = $_.Name.ToLower();" ^
@@ -75,10 +75,10 @@ if exist "%UNSORTED%" (
     echo.
 )
 
-REM ==== フッター表示 ====
+REM ==== Footer ====
 echo ====================================
-echo    Step 4: ファイル名小文字化 完了
+echo    Step 4: Lowercase complete
 echo ====================================
-echo 終了時刻: %DATE% %TIME%
+echo End: %DATE% %TIME%
 echo.
 pause

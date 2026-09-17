@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 > nul
 
-REM ==== パス設定 ====
+REM ==== Paths ====
 set SCRIPT_DIR=%~dp0
 cd /d "%SCRIPT_DIR%.."
 set WORK_DIR=%CD%
@@ -10,27 +10,27 @@ set EXIFTOOL=%SCRIPT_DIR%exiftool.exe
 set RULES_PHOTO=%SCRIPT_DIR%rules\photo
 set RULES_VIDEO=%SCRIPT_DIR%rules\video
 
-REM ==== 環境チェック ====
+REM ==== Checks ====
 if not exist "%UNSORTED%" (
-    echo エラー: Unsortedフォルダが見つかりません: %UNSORTED%
+    echo Error: Unsorted folder not found: %UNSORTED%
     pause & exit /b 1
 )
 if not exist "%EXIFTOOL%" (
-    echo エラー: exiftool.exe が見つかりません: %EXIFTOOL%
+    echo Error: exiftool.exe not found: %EXIFTOOL%
     pause & exit /b 1
 )
 if not exist "%RULES_PHOTO%" (
-    echo エラー: rules\photo フォルダが見つかりません
+    echo Error: rules\photo folder not found
     pause & exit /b 1
 )
 if not exist "%RULES_VIDEO%" (
-    echo エラー: rules\video フォルダが見つかりません
+    echo Error: rules\video folder not found
     pause & exit /b 1
 )
 
 REM ==== GeolocLang ====
-REM LocaleName の第1サブタグ（ja-JP -> ja）。欠落・不正値は en。
-REM Photos / Movies / NoDate / NoLocation / Unknown は常に英語。
+REM First subtag of LocaleName (ja-JP -> ja). Missing/invalid -> en.
+REM Photos / Movies / NoDate / NoLocation / Unknown stay English.
 set "GEO_LANG=en"
 set "LOCALE="
 set "GEO_CAND="
@@ -45,20 +45,20 @@ if errorlevel 1 goto :geo_done
 set "GEO_LANG=%GEO_CAND%"
 :geo_done
 
-REM ==== ヘッダー表示 ====
+REM ==== Header ====
 echo.
 echo ====================================
-echo    Step 2: メディア整理
+echo    Step 2: Organize media
 echo ====================================
-echo 作業フォルダ: %WORK_DIR%
-echo 開始時刻: %DATE% %TIME%
+echo Work folder: %WORK_DIR%
+echo Start: %DATE% %TIME%
 echo GeolocLang: %GEO_LANG%
 echo ====================================
 echo.
 
-REM ==== 画像整理 (優先度順: DateTimeOriginal > CreateDate > FileModifyDate > NoDate) ====
-REM GPS があれば country/region/city を追加。無ければ NoLocation/Unknown/Unknown
-echo --- 画像ファイル整理 ---
+REM ==== Photos (DateTimeOriginal > CreateDate > FileModifyDate > NoDate) ====
+REM GPS present: country/region/city. Else: NoLocation/Unknown/Unknown
+echo --- Organize photos ---
 echo.
 
 echo [1/8] DateTimeOriginal + Model
@@ -93,8 +93,8 @@ echo [8/8] NoDate + Unknown
 "%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -api GeolocLang=%GEO_LANG% -@ "%RULES_PHOTO%\p8_nodate_unknown.args" -r "%UNSORTED%"
 echo.
 
-REM ==== 動画整理 (優先度順: CreateDate > FileModifyDate > NoDate) ====
-echo --- 動画ファイル整理 ---
+REM ==== Videos (CreateDate > FileModifyDate > NoDate) ====
+echo --- Organize videos ---
 echo.
 
 echo [1/6] CreateDate + Make
@@ -121,10 +121,10 @@ echo [6/6] NoDate + Unknown
 "%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -api GeolocLang=%GEO_LANG% -@ "%RULES_VIDEO%\v6_nodate_unknown.args" -r "%UNSORTED%"
 echo.
 
-REM ==== フッター表示 ====
+REM ==== Footer ====
 echo ====================================
-echo    Step 2: メディア整理 完了
+echo    Step 2: Organize complete
 echo ====================================
-echo 終了時刻: %DATE% %TIME%
+echo End: %DATE% %TIME%
 echo.
 pause
