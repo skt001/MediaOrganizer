@@ -7,7 +7,7 @@
 - **重複削除** — ハッシュ完全一致による重複削除 + 視覚的類似画像の削除（czkawka）
 - **メタデータ整理** — EXIF 情報をもとに `Photos/` / `Movies/` へ日付・撮影地・機種名で振り分け
 - **優先度ルール** — `DateTimeOriginal` → `CreateDate` → `FileModifyDate` → `NoDate` の順にフォールバック
-- **撮影地フォルダ** — GPS があるファイルは ExifTool Geolocation で `country/region/city` を追加。無い場合は `NoLocation`（番地までの住所にはならない）。地名の言語は OS の `LocaleName` に従い、取得できない／不正なときは英語 (`en`)
+- **撮影地フォルダ** — GPS があるファイルは ExifTool Geolocation で `country/region/city` を追加。無い場合は `NoLocation`（番地までの住所にはならない）。地名は標準の ExifTool データベースの英語名（例: `Japan/Tokyo/Shibuya`）
 - **小文字化** — NTFS の無音スキップ問題を一時名経由方式で回避して確実に小文字化
 - **空フォルダ削除** — 整理後に残った空フォルダを再帰削除
 - **一括実行** — `run_all.bat` 1本で全工程を順に実行
@@ -54,7 +54,7 @@
 
 ## 整理後の構造
 
-`Photos` / `Movies` / `NoDate` / `NoLocation` / `Unknown` など、パスの固定部分は常に英語です。Geolocation の地名だけが OS ロケールの言語になり、fallback は英語です。以下は英語 (`en`) の例です：
+パスは英語です。Geolocation の地名も標準データベースの英語名です：
 
 ```
 Photos/

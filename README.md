@@ -9,7 +9,7 @@ A Windows batch tool to automatically organize photos and videos by date, shooti
 - **Duplicate removal** — exact hash matching + optional similar image detection (czkawka)
 - **Metadata-based sorting** — organizes files into `Photos/` and `Movies/` by date, location, and device name
 - **Priority rules** — falls back gracefully: `DateTimeOriginal` → `CreateDate` → `FileModifyDate` → `NoDate`
-- **Location folders** — when GPS is present, ExifTool Geolocation adds `country/region/city`; otherwise `NoLocation` (nearest city, not a street address). Place-name language follows the OS locale (`LocaleName`); if that value is missing or invalid, names are English (`en`)
+- **Location folders** — when GPS is present, ExifTool Geolocation adds `country/region/city`; otherwise `NoLocation` (nearest city, not a street address). Names come from the standard ExifTool database (English, e.g. `Japan/Tokyo/Shibuya`)
 - **Safe lowercase rename** — works correctly on NTFS via temporary name (avoids the silent no-op bug)
 - **Empty folder cleanup** — removes leftover empty directories after sorting
 - **Run all at once** — single `run_all.bat` to execute all steps in order
@@ -56,7 +56,7 @@ Place the `MediaOrganizer/` folder next to your data folders:
 
 ## Output Structure
 
-Fixed path segments (`Photos`, `Movies`, `NoDate`, `NoLocation`, `Unknown`) are always English. Geolocation names use the OS locale language, with English as the fallback. Examples below are the English (`en`) form:
+Path segments are English, including geolocation names from the standard database:
 
 ```
 Photos/
