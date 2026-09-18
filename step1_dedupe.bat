@@ -30,7 +30,12 @@ echo.
 
 REM ==== [1/2] Exact-hash duplicates ====
 echo [1/2] Removing exact-hash duplicate files
-"%CZKAWKA%" dup --directories "%UNSORTED%" -D AEB
+"%CZKAWKA%" dup --directories "%UNSORTED%" -D AEB -W
+if errorlevel 1 (
+    echo Error: exact-hash duplicate removal failed.
+    pause
+    exit /b 1
+)
 echo.
 
 REM ==== [2/2] Visually similar images (confirm first) ====
@@ -45,20 +50,36 @@ echo  [S] Skip this step
 echo.
 set /p CHOICE="Choose (D/Y/S): "
 
-if /i "%CHOICE%"=="D" (
-    echo Running dry run (no files deleted)...
-    "%CZKAWKA%" image --directories "%UNSORTED%"
-    echo.
-    echo Dry run done. Review the list, then run again and choose Y.
-)
-if /i "%CHOICE%"=="Y" (
-    echo Deleting similar images...
-    "%CZKAWKA%" image --directories "%UNSORTED%" -D AEB
-)
+if /i "%CHOICE%"=="D" goto :similar_dry
+if /i "%CHOICE%"=="Y" goto :similar_delete
 if /i "%CHOICE%"=="S" (
     echo Skipped similar-image deletion.
+    goto :similar_done
+)
+goto :similar_done
+
+:similar_dry
+echo Running dry run (no files deleted)...
+"%CZKAWKA%" image --directories "%UNSORTED%" -W
+if errorlevel 1 (
+    echo Error: similar-image dry run failed.
+    pause
+    exit /b 1
+)
+echo.
+echo Dry run done. Review the list, then run again and choose Y.
+goto :similar_done
+
+:similar_delete
+echo Deleting similar images...
+"%CZKAWKA%" image --directories "%UNSORTED%" -D AEB -W
+if errorlevel 1 (
+    echo Error: similar-image removal failed.
+    pause
+    exit /b 1
 )
 
+:similar_done
 echo.
 
 REM ==== Footer ====
@@ -68,3 +89,4 @@ echo ====================================
 echo End: %DATE% %TIME%
 echo.
 pause
+exit /b 0

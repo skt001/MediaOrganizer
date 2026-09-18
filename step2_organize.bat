@@ -44,35 +44,43 @@ echo --- Organize photos ---
 echo.
 
 echo [1/8] DateTimeOriginal + Model
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_PHOTO%\p1_datetime_model.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_PHOTO%\p1_datetime_model.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [2/8] DateTimeOriginal + Unknown
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_PHOTO%\p2_datetime_unknown.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_PHOTO%\p2_datetime_unknown.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [3/8] CreateDate + Model
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_PHOTO%\p3_createdate_model.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_PHOTO%\p3_createdate_model.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [4/8] CreateDate + Unknown
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_PHOTO%\p4_createdate_unknown.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_PHOTO%\p4_createdate_unknown.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [5/8] FileModifyDate + Model
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_PHOTO%\p5_filemod_model.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_PHOTO%\p5_filemod_model.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [6/8] FileModifyDate + Unknown
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_PHOTO%\p6_filemod_unknown.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_PHOTO%\p6_filemod_unknown.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [7/8] NoDate + Model
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_PHOTO%\p7_nodate_model.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_PHOTO%\p7_nodate_model.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [8/8] NoDate + Unknown
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_PHOTO%\p8_nodate_unknown.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_PHOTO%\p8_nodate_unknown.args"
+if errorlevel 1 exit /b 1
 echo.
 
 REM ==== Videos (CreateDate > FileModifyDate > NoDate) ====
@@ -80,27 +88,33 @@ echo --- Organize videos ---
 echo.
 
 echo [1/6] CreateDate + Make
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_VIDEO%\v1_createdate_make.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_VIDEO%\v1_createdate_make.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [2/6] CreateDate + Unknown
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_VIDEO%\v2_createdate_unknown.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_VIDEO%\v2_createdate_unknown.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [3/6] FileModifyDate + Make
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_VIDEO%\v3_filemod_make.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_VIDEO%\v3_filemod_make.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [4/6] FileModifyDate + Unknown
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_VIDEO%\v4_filemod_unknown.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_VIDEO%\v4_filemod_unknown.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [5/6] NoDate + Make
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_VIDEO%\v5_nodate_make.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_VIDEO%\v5_nodate_make.args"
+if errorlevel 1 exit /b 1
 echo.
 
 echo [6/6] NoDate + Unknown
-"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%RULES_VIDEO%\v6_nodate_unknown.args" -r "%UNSORTED%"
+call :run_exiftool "%RULES_VIDEO%\v6_nodate_unknown.args"
+if errorlevel 1 exit /b 1
 echo.
 
 REM ==== Footer ====
@@ -110,3 +124,21 @@ echo ====================================
 echo End: %DATE% %TIME%
 echo.
 pause
+exit /b 0
+
+
+REM ============================================================
+REM Subroutine: :run_exiftool <args-file>
+REM ExifTool exit 2 = all files failed -if (expected for fallback)
+REM ============================================================
+:run_exiftool
+set "_ARGS=%~1"
+"%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%_ARGS%" -r "%UNSORTED%"
+set "_ERR=%ERRORLEVEL%"
+if "%_ERR%"=="2" set "_ERR=0"
+if not "%_ERR%"=="0" (
+    echo Error: ExifTool failed: %_ARGS%  [exit %_ERR%]
+    pause
+    exit /b 1
+)
+exit /b 0

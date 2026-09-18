@@ -62,3 +62,4 @@ echo ====================================
 echo End: %DATE% %TIME%
 echo.
 pause
+exit /b 0

@@ -35,43 +35,22 @@ REM  ABC.jpg -> ABC.jpg.__tmp__ -> abc.jpg
 
 if exist "%PHOTOS%" (
     echo [1/3] Photos
-    powershell -NoProfile -Command ^
-        "Get-ChildItem -LiteralPath '%PHOTOS%' -Recurse -File | ForEach-Object {" ^
-        "  $lower = $_.Name.ToLower();" ^
-        "  if ($_.Name -cne $lower) {" ^
-        "    $tmp = $_.FullName + '.__tmp__';" ^
-        "    Rename-Item -LiteralPath $_.FullName -NewName ($_.Name + '.__tmp__');" ^
-        "    Rename-Item -LiteralPath $tmp -NewName $lower;" ^
-        "  }" ^
-        "}"
+    call :lowercase_folder "%PHOTOS%" "Photos"
+    if errorlevel 1 exit /b 1
     echo.
 )
 
 if exist "%MOVIES%" (
     echo [2/3] Movies
-    powershell -NoProfile -Command ^
-        "Get-ChildItem -LiteralPath '%MOVIES%' -Recurse -File | ForEach-Object {" ^
-        "  $lower = $_.Name.ToLower();" ^
-        "  if ($_.Name -cne $lower) {" ^
-        "    $tmp = $_.FullName + '.__tmp__';" ^
-        "    Rename-Item -LiteralPath $_.FullName -NewName ($_.Name + '.__tmp__');" ^
-        "    Rename-Item -LiteralPath $tmp -NewName $lower;" ^
-        "  }" ^
-        "}"
+    call :lowercase_folder "%MOVIES%" "Movies"
+    if errorlevel 1 exit /b 1
     echo.
 )
 
 if exist "%UNSORTED%" (
     echo [3/3] Unsorted
-    powershell -NoProfile -Command ^
-        "Get-ChildItem -LiteralPath '%UNSORTED%' -Recurse -File | ForEach-Object {" ^
-        "  $lower = $_.Name.ToLower();" ^
-        "  if ($_.Name -cne $lower) {" ^
-        "    $tmp = $_.FullName + '.__tmp__';" ^
-        "    Rename-Item -LiteralPath $_.FullName -NewName ($_.Name + '.__tmp__');" ^
-        "    Rename-Item -LiteralPath $tmp -NewName $lower;" ^
-        "  }" ^
-        "}"
+    call :lowercase_folder "%UNSORTED%" "Unsorted"
+    if errorlevel 1 exit /b 1
     echo.
 )
 
@@ -82,3 +61,30 @@ echo ====================================
 echo End: %DATE% %TIME%
 echo.
 pause
+exit /b 0
+
+
+REM ============================================================
+REM Subroutine: :lowercase_folder <folder path> <label>
+REM ============================================================
+:lowercase_folder
+set "_TARGET=%~1"
+set "_LABEL=%~2"
+
+powershell -NoProfile -Command ^
+    "$ErrorActionPreference = 'Stop';" ^
+    "Get-ChildItem -LiteralPath '%_TARGET%' -Recurse -File | ForEach-Object {" ^
+    "  $lower = $_.Name.ToLower();" ^
+    "  if ($_.Name -cne $lower) {" ^
+    "    $tmp = $_.FullName + '.__tmp__';" ^
+    "    Rename-Item -LiteralPath $_.FullName -NewName ($_.Name + '.__tmp__');" ^
+    "    Rename-Item -LiteralPath $tmp -NewName $lower;" ^
+    "  }" ^
+    "}"
+
+if errorlevel 1 (
+    echo Error: Failed to lowercase filenames in %_LABEL%.
+    pause
+    exit /b 1
+)
+exit /b 0
