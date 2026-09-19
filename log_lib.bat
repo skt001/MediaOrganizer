@@ -31,36 +31,25 @@ if defined LOG_FILE call "%~f0" put "Log: %LOG_FILE%"
 pause
 exit /b 1
 
-:cmd_run
-set "LOG_EXE=%~2"
-set "_ARGFILE=%TEMP%\MediaOrganizer_args.txt"
-set "_OUTFILE=%TEMP%\MediaOrganizer_out.txt"
-type nul >"%_ARGFILE%"
-shift
-shift
-:cmd_run_args
-if "%~1"=="" goto :cmd_run_go
->>"%_ARGFILE%" echo(%~1
-shift
-goto :cmd_run_args
-:cmd_run_go
-setlocal EnableDelayedExpansion
-set "ARGS="
-for /f "usebackq delims=" %%A in ("%_ARGFILE%") do set "ARGS=!ARGS! "%%A""
-call "%~f0" put "Running: %LOG_EXE%"
-"%LOG_EXE%" !ARGS! >"%_OUTFILE%" 2>&1
-set "_ERR=!ERRORLEVEL!"
-if exist "%_OUTFILE%" (
-    type "%_OUTFILE%"
-    if defined LOG_FILE type "%_OUTFILE%" >>"%LOG_FILE%"
+REM LOG_CMD must be set by the caller. Do not pass the command through
+REM `call` arguments — cmd treats & and = as separators.
+:cmd_exec
+if not defined LOG_CMD (
+    call "%~f0" put "Error: LOG_CMD is not set"
+    exit /b 1
 )
-if exist "%_ARGFILE%" del "%_ARGFILE%"
+call "%~f0" put "Running: %LOG_CMD%"
+set "_OUTFILE=%TEMP%\MediaOrganizer_%RANDOM%%RANDOM%.txt"
+%LOG_CMD% >"%_OUTFILE%" 2>&1
+set "_ERR=%ERRORLEVEL%"
+if exist "%_OUTFILE%" type "%_OUTFILE%"
+if exist "%_OUTFILE%" if defined LOG_FILE type "%_OUTFILE%" >>"%LOG_FILE%"
 if exist "%_OUTFILE%" del "%_OUTFILE%"
-if !_ERR! lss 0 (
-    call "%~f0" put "Error: command failed with exit !_ERR! - treated as 1"
-    set "_ERR=1"
+call "%~f0" put "Exit: %_ERR%"
+if %_ERR% LSS 0 (
+    call "%~f0" put "Error: negative exit %_ERR% treated as 1"
+    set LOG_CMD=
+    exit /b 1
 )
-for %%E in (!_ERR!) do (
-    endlocal
-    exit /b %%E
-)
+set LOG_CMD=
+exit /b %_ERR%

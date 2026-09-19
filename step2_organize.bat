@@ -135,7 +135,8 @@ REM ExifTool exit 2 = all files failed -if (expected for fallback)
 REM ============================================================
 :run_exiftool
 set "_ARGS=%~1"
-call "%SCRIPT_DIR%log_lib.bat" run "%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%_ARGS%" -r "%UNSORTED%"
+set LOG_CMD="%EXIFTOOL%" -api QuickTimeUTC=1 -api geolocation -@ "%_ARGS%" -r "%UNSORTED%"
+call "%SCRIPT_DIR%log_lib.bat" exec
 set "_ERR=%ERRORLEVEL%"
 if "%_ERR%"=="2" set "_ERR=0"
 if not "%_ERR%"=="0" (

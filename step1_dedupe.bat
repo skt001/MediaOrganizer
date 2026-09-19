@@ -31,7 +31,8 @@ call "%SCRIPT_DIR%log_lib.bat" put ""
 
 REM ==== [1/2] Exact-hash duplicates ====
 call "%SCRIPT_DIR%log_lib.bat" put "[1/2] Removing exact-hash duplicate files"
-call "%SCRIPT_DIR%log_lib.bat" run "%CZKAWKA%" dup --directories "%UNSORTED%" -D AEB -W
+set LOG_CMD="%CZKAWKA%" dup --directories "%UNSORTED%" -D AEB -W
+call "%SCRIPT_DIR%log_lib.bat" exec
 if errorlevel 1 (
     call "%SCRIPT_DIR%log_lib.bat" fail "Error: exact-hash duplicate removal failed."
     exit /b 1
@@ -61,7 +62,8 @@ goto :similar_done
 
 :similar_dry
 call "%SCRIPT_DIR%log_lib.bat" put "Running dry run (no files deleted)..."
-call "%SCRIPT_DIR%log_lib.bat" run "%CZKAWKA%" image --directories "%UNSORTED%" -W
+set LOG_CMD="%CZKAWKA%" image --directories "%UNSORTED%" -W
+call "%SCRIPT_DIR%log_lib.bat" exec
 if errorlevel 1 (
     call "%SCRIPT_DIR%log_lib.bat" fail "Error: similar-image dry run failed."
     exit /b 1
@@ -72,7 +74,8 @@ goto :similar_done
 
 :similar_delete
 call "%SCRIPT_DIR%log_lib.bat" put "Deleting similar images..."
-call "%SCRIPT_DIR%log_lib.bat" run "%CZKAWKA%" image --directories "%UNSORTED%" -D AEB -W
+set LOG_CMD="%CZKAWKA%" image --directories "%UNSORTED%" -D AEB -W
+call "%SCRIPT_DIR%log_lib.bat" exec
 if errorlevel 1 (
     call "%SCRIPT_DIR%log_lib.bat" fail "Error: similar-image removal failed."
     exit /b 1
