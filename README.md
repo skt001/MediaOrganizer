@@ -13,6 +13,7 @@ A Windows batch tool to automatically organize photos and videos by date, shooti
 - **Safe lowercase rename** — works correctly on NTFS via temporary name (avoids the silent no-op bug)
 - **Empty folder cleanup** — removes leftover empty directories after sorting
 - **Run all at once** — single `run_all.bat` to execute all steps in order
+- **Console logs** — every run writes UTF-8 logs to `MediaOrganizer/logs/`
 
 ## Directory Layout
 
@@ -31,6 +32,7 @@ Place the `MediaOrganizer/` folder next to your data folders:
     ├── step4_lowercase.bat
     ├── czkawka_cli.exe    ← place here
     ├── exiftool.exe       ← place here
+    ├── logs/              ← created automatically
     └── rules/
         ├── photo/
         └── video/
@@ -53,6 +55,8 @@ Place the `MediaOrganizer/` folder next to your data folders:
 | `step2_organize.bat` | Sort photos and videos by metadata |
 | `step3_cleanup.bat` | Remove empty folders |
 | `step4_lowercase.bat` | Lowercase all filenames |
+
+Logs are saved under `MediaOrganizer/logs/` as `yyyyMMdd_HHmmss_<script>.log`. `run_all.bat` writes one file for the whole run. Logs are not committed.
 
 ## Output Structure
 

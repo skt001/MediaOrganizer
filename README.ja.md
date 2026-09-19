@@ -11,6 +11,7 @@
 - **小文字化** — NTFS の無音スキップ問題を一時名経由方式で回避して確実に小文字化
 - **空フォルダ削除** — 整理後に残った空フォルダを再帰削除
 - **一括実行** — `run_all.bat` 1本で全工程を順に実行
+- **コンソールログ** — 実行内容を `MediaOrganizer/logs/` に UTF-8 で保存
 
 ## フォルダ構成
 
@@ -29,6 +30,7 @@
     ├── step4_lowercase.bat
     ├── czkawka_cli.exe    ← ここに配置
     ├── exiftool.exe       ← ここに配置
+    ├── logs/              ← 自動生成
     └── rules/
         ├── photo/
         └── video/
@@ -51,6 +53,8 @@
 | `step2_organize.bat` | 写真・動画をメタデータで振り分け |
 | `step3_cleanup.bat` | 空フォルダ削除 |
 | `step4_lowercase.bat` | ファイル名を小文字化 |
+
+ログは `MediaOrganizer/logs/` に `yyyyMMdd_HHmmss_<スクリプト>.log` として保存されます。`run_all.bat` は一連の実行で1ファイルです。ログはコミットしません。
 
 ## 整理後の構造
 
