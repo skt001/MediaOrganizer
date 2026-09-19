@@ -51,29 +51,9 @@ REM ============================================================
 :cleanup_folder
 set "_TARGET=%~1"
 set "_LABEL=%~2"
-set "_LIST=%SCRIPT_DIR%_folder_list.tmp"
 
 call "%SCRIPT_DIR%log_lib.bat" put "[%_LABEL%] Removing empty folders"
-
-dir "%_TARGET%" /ad /b /s > "%_LIST%" 2>nul
-
-REM Skip if the list is empty
-for %%A in ("%_LIST%") do set _SIZE=%%~zA
-if "%_SIZE%"=="0" (
-    call "%SCRIPT_DIR%log_lib.bat" put "[%_LABEL%] No empty folders"
-    if exist "%_LIST%" del "%_LIST%"
-    call "%SCRIPT_DIR%log_lib.bat" put ""
-    exit /b 0
-)
-
-REM Reverse-sort so deeper folders are removed first
-call "%SCRIPT_DIR%log_lib.bat" run powershell -NoProfile -Command "$c = Get-Content '%_LIST%' -Encoding UTF8 | Sort-Object -Descending; [System.IO.File]::WriteAllLines('%_LIST%', $c, (New-Object System.Text.UTF8Encoding $false))"
-
-for /f "usebackq delims=" %%d in ("%_LIST%") do (
-    rd "%%d" 2>nul && call "%SCRIPT_DIR%log_lib.bat" put "Removed: %%d"
-)
-
-if exist "%_LIST%" del "%_LIST%"
+call "%SCRIPT_DIR%log_lib.bat" run powershell -NoProfile -ExecutionPolicy Bypass -Command "& '%SCRIPT_DIR%cleanup_folder.ps1' -Target '%_TARGET%'"
 call "%SCRIPT_DIR%log_lib.bat" put "[%_LABEL%] Done"
 call "%SCRIPT_DIR%log_lib.bat" put ""
 exit /b 0

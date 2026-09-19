@@ -73,7 +73,7 @@ REM ============================================================
 set "_TARGET=%~1"
 set "_LABEL=%~2"
 
-call "%SCRIPT_DIR%log_lib.bat" run powershell -NoProfile -File "%SCRIPT_DIR%lowercase_folder.ps1" -Target "%_TARGET%"
+call "%SCRIPT_DIR%log_lib.bat" run powershell -NoProfile -ExecutionPolicy Bypass -Command "& '%SCRIPT_DIR%lowercase_folder.ps1' -Target '%_TARGET%'"
 if errorlevel 1 (
     call "%SCRIPT_DIR%log_lib.bat" fail "Error: Failed to lowercase filenames in %_LABEL%."
     exit /b 1
