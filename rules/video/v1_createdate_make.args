@@ -39,5 +39,5 @@ m2t
 ts
 -if
 $MIMEType =~ /^video\// and ($CreateDate =~ /[1-9]/ and $Make)
--Directory<Movies/${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,14):"";$_=$_?substr($_,0,4)."-".substr($_,4,2):"NoDate"}/${GeolocationCountry;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"NoLocation"}/${GeolocationRegion;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/${GeolocationCity;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/${Make;s/[\\\/:*?"<>|]/_/g}
--FileName<${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,14):"";$_=$_?substr($_,0,8)."_".substr($_,8,6):"00000000_000000"}%-c.%e
+-Directory<Movies/${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,4)."-".substr($_,4,2):""}/${GeolocationCountry;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"NoLocation"}/${GeolocationRegion;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/${GeolocationCity;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/${Make;s/[\\\/:*?"<>|]/_/g}
+-FileName<${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,8)."_".substr($_,8,6):""}%-c.%e
