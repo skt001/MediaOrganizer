@@ -1,0 +1,4 @@
+# Windows cmd requires CRLF. Keep bytes as-is so git clone and ZIP both work.
+*.bat -text
+*.cmd -text
+*.args -text
