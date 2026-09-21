@@ -1,0 +1,27 @@
+-charset
+filename=utf8
+-m
+-P
+-overwrite_original
+-ext+
+acr
+-ext+
+cur
+-ext+
+ico
+-ext+
+pict
+-ext+
+pcx
+-ext+
+djvu
+-ext+
+sketch
+-ext+
+3fr
+-ext+
+k25
+-if
+$MIMEType =~ /^image\// and ($CreateDate =~ /[1-9]/ and not $Model) and not defined $GPSLatitude
+-Directory<Photos/${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,4)."-".substr($_,4,2):""}/NoLocation/Unknown
+-FileName<${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,8)."_".substr($_,8,6):""}${SubSecTime;$_="_".$_ if $_}%-c.%e
