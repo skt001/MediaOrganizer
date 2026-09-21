@@ -22,6 +22,6 @@ sketch
 -ext+
 k25
 -if
-$MIMEType =~ /^image\// and ($CreateDate =~ /[1-9]/ and not $Model) and defined $GPSLatitude
--Directory<Photos/${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,4)."-".substr($_,4,2):""}/${GeolocationCountry;s/[\\\/:*?"<>|]/_/g}/${GeolocationRegion;s/[\\\/:*?"<>|]/_/g}/${GeolocationCity;s/[\\\/:*?"<>|]/_/g}/Unknown
+$MIMEType =~ /^image\// and ($CreateDate =~ /[1-9]/ and not $Model)
+-Directory<Photos/${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,4)."-".substr($_,4,2):""}/${GeolocationCountry;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"NoLocation"}/${GeolocationRegion;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/${GeolocationCity;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/Unknown
 -FileName<${CreateDate;s/\D//g;$_=length($_)>=14?substr($_,0,8)."_".substr($_,8,6):""}${SubSecTime;$_="_".$_ if $_}%-c.%e

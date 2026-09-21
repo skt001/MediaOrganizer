@@ -40,70 +40,46 @@ call "%SCRIPT_DIR%log_lib.bat" put "===================================="
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
 REM ==== Photos (DateTimeOriginal > CreateDate > FileModifyDate > NoDate) ====
-REM GPS absent: NoLocation (1 level). GPS present: country/region/city (missing levels skipped).
+REM GPS present: country/region/city. Else: NoLocation/Unknown/Unknown
 call "%SCRIPT_DIR%log_lib.bat" put "--- Organize photos ---"
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[1/8] DateTimeOriginal + Model (no GPS)"
-call :run_exiftool "%RULES_PHOTO%\p1_datetime_model_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[1/8] DateTimeOriginal + Model (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[1/8] DateTimeOriginal + Model"
 call :run_exiftool "%RULES_PHOTO%\p1_datetime_model.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[2/8] DateTimeOriginal + Unknown (no GPS)"
-call :run_exiftool "%RULES_PHOTO%\p2_datetime_unknown_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[2/8] DateTimeOriginal + Unknown (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[2/8] DateTimeOriginal + Unknown"
 call :run_exiftool "%RULES_PHOTO%\p2_datetime_unknown.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[3/8] CreateDate + Model (no GPS)"
-call :run_exiftool "%RULES_PHOTO%\p3_createdate_model_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[3/8] CreateDate + Model (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[3/8] CreateDate + Model"
 call :run_exiftool "%RULES_PHOTO%\p3_createdate_model.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[4/8] CreateDate + Unknown (no GPS)"
-call :run_exiftool "%RULES_PHOTO%\p4_createdate_unknown_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[4/8] CreateDate + Unknown (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[4/8] CreateDate + Unknown"
 call :run_exiftool "%RULES_PHOTO%\p4_createdate_unknown.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[5/8] FileModifyDate + Model (no GPS)"
-call :run_exiftool "%RULES_PHOTO%\p5_filemod_model_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[5/8] FileModifyDate + Model (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[5/8] FileModifyDate + Model"
 call :run_exiftool "%RULES_PHOTO%\p5_filemod_model.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[6/8] FileModifyDate + Unknown (no GPS)"
-call :run_exiftool "%RULES_PHOTO%\p6_filemod_unknown_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[6/8] FileModifyDate + Unknown (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[6/8] FileModifyDate + Unknown"
 call :run_exiftool "%RULES_PHOTO%\p6_filemod_unknown.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[7/8] NoDate + Model (no GPS)"
-call :run_exiftool "%RULES_PHOTO%\p7_nodate_model_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[7/8] NoDate + Model (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[7/8] NoDate + Model"
 call :run_exiftool "%RULES_PHOTO%\p7_nodate_model.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[8/8] NoDate + Unknown (no GPS)"
-call :run_exiftool "%RULES_PHOTO%\p8_nodate_unknown_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[8/8] NoDate + Unknown (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[8/8] NoDate + Unknown"
 call :run_exiftool "%RULES_PHOTO%\p8_nodate_unknown.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
@@ -112,50 +88,32 @@ REM ==== Videos (CreateDate > FileModifyDate > NoDate) ====
 call "%SCRIPT_DIR%log_lib.bat" put "--- Organize videos ---"
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[1/6] CreateDate + Make (no GPS)"
-call :run_exiftool "%RULES_VIDEO%\v1_createdate_make_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[1/6] CreateDate + Make (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[1/6] CreateDate + Make"
 call :run_exiftool "%RULES_VIDEO%\v1_createdate_make.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[2/6] CreateDate + Unknown (no GPS)"
-call :run_exiftool "%RULES_VIDEO%\v2_createdate_unknown_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[2/6] CreateDate + Unknown (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[2/6] CreateDate + Unknown"
 call :run_exiftool "%RULES_VIDEO%\v2_createdate_unknown.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[3/6] FileModifyDate + Make (no GPS)"
-call :run_exiftool "%RULES_VIDEO%\v3_filemod_make_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[3/6] FileModifyDate + Make (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[3/6] FileModifyDate + Make"
 call :run_exiftool "%RULES_VIDEO%\v3_filemod_make.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[4/6] FileModifyDate + Unknown (no GPS)"
-call :run_exiftool "%RULES_VIDEO%\v4_filemod_unknown_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[4/6] FileModifyDate + Unknown (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[4/6] FileModifyDate + Unknown"
 call :run_exiftool "%RULES_VIDEO%\v4_filemod_unknown.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[5/6] NoDate + Make (no GPS)"
-call :run_exiftool "%RULES_VIDEO%\v5_nodate_make_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[5/6] NoDate + Make (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[5/6] NoDate + Make"
 call :run_exiftool "%RULES_VIDEO%\v5_nodate_make.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""
 
-call "%SCRIPT_DIR%log_lib.bat" put "[6/6] NoDate + Unknown (no GPS)"
-call :run_exiftool "%RULES_VIDEO%\v6_nodate_unknown_noloc.args"
-if errorlevel 1 exit /b 1
-call "%SCRIPT_DIR%log_lib.bat" put "[6/6] NoDate + Unknown (GPS)"
+call "%SCRIPT_DIR%log_lib.bat" put "[6/6] NoDate + Unknown"
 call :run_exiftool "%RULES_VIDEO%\v6_nodate_unknown.args"
 if errorlevel 1 exit /b 1
 call "%SCRIPT_DIR%log_lib.bat" put ""

@@ -38,6 +38,6 @@ m2t
 -ext+
 ts
 -if
-$MIMEType =~ /^video\// and ($FileModifyDate =~ /[1-9]/ and not $Make) and defined $GPSLatitude
--Directory<Movies/${FileModifyDate;s/\D//g;$_=length($_)>=14?substr($_,0,4)."-".substr($_,4,2):""}/${GeolocationCountry;s/[\\\/:*?"<>|]/_/g}/${GeolocationRegion;s/[\\\/:*?"<>|]/_/g}/${GeolocationCity;s/[\\\/:*?"<>|]/_/g}/Unknown
+$MIMEType =~ /^video\// and ($FileModifyDate =~ /[1-9]/ and not $Make)
+-Directory<Movies/${FileModifyDate;s/\D//g;$_=length($_)>=14?substr($_,0,4)."-".substr($_,4,2):""}/${GeolocationCountry;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"NoLocation"}/${GeolocationRegion;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/${GeolocationCity;s/[\\\/:*?"<>|]/_/g;$_=$_?$_:"Unknown"}/Unknown
 -FileName<${FileModifyDate;s/\D//g;$_=length($_)>=14?substr($_,0,8)."_".substr($_,8,6):""}%-c.%e
