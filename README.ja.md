@@ -7,7 +7,8 @@
 - **重複削除** — ハッシュ完全一致による重複削除 + 視覚的類似画像の削除（czkawka）
 - **メタデータ整理** — EXIF 情報をもとに `Photos/` / `Movies/` へ日付・撮影地・機種名で振り分け
 - **優先度ルール** — `DateTimeOriginal` → `CreateDate` → `FileModifyDate` → `NoDate` の順にフォールバック
-- **撮影地フォルダ** — GPS があるファイルは ExifTool Geolocation で `country/region/city` を追加。無い場合は `NoLocation`（番地までの住所にはならない）。地名は標準の ExifTool データベースの英語名（例: `Japan/Tokyo/Shibuya`）
+- **撮影地フォルダ** — GPS があるファイルは ExifTool Geolocation で `country/region/city` を追加（欠けた階層は飛ばす）。無い場合は `NoLocation` の1階層（番地までの住所にはならない）。地名は標準の ExifTool データベースの英語名（例: `Japan/Tokyo/Shibuya`）
+- **機種フォルダ** — 写真は `Model`、動画は `Make`。無い場合は `Unknown`
 - **小文字化** — NTFS の無音スキップ問題を一時名経由方式で回避して確実に小文字化
 - **空フォルダ削除** — 整理後に残った空フォルダを再帰削除
 - **一括実行** — `run_all.bat` 1本で全工程を順に実行
@@ -28,19 +29,28 @@
     ├── step2_organize.bat
     ├── step3_cleanup.bat
     ├── step4_lowercase.bat
-    ├── czkawka_cli.exe    ← ここに配置
-    ├── exiftool.exe       ← ここに配置
-    ├── logs/              ← 自動生成
-    └── rules/
-        ├── photo/
-        └── video/
+    ├── README.md
+    ├── LICENSE
+    ├── bin/               ← exe をここに置く
+    │   ├── PUT_EXECUTABLES_HERE.txt
+    │   ├── czkawka_cli.exe
+    │   └── exiftool.exe
+    ├── lib/               ← ルール・設定・ヘルパー
+    │   ├── exiftool.config
+    │   ├── log_lib.bat
+    │   ├── cleanup_folder.ps1
+    │   ├── lowercase_folder.ps1
+    │   └── rules/
+    │       ├── photo/
+    │       └── video/
+    └── logs/              ← 自動生成
 ```
 
 ## 必要なもの
 
 - Windows 10 以降
-- [exiftool.exe](https://exiftool.org/) 12.82 以降 — `MediaOrganizer/` に配置（Geolocation 機能が必要）
-- [czkawka_cli.exe](https://github.com/qarmin/czkawka/releases) — `MediaOrganizer/` に配置
+- [exiftool.exe](https://exiftool.org/) 12.82 以降 — `MediaOrganizer/bin/` に配置（Geolocation 機能が必要）
+- [czkawka_cli.exe](https://github.com/qarmin/czkawka/releases) — `MediaOrganizer/bin/` に配置
 
 ## 使い方
 
@@ -81,10 +91,10 @@ Movies/
 GPS が無い場合:
 
 ```
-Photos/2024-03/NoLocation/Unknown/Unknown/iPhone 15 Pro/
+Photos/2024-03/NoLocation/iPhone 15 Pro/
     └── 20240315_143022.jpg
 
-Photos/NoDate/NoLocation/Unknown/Unknown/Unknown/
+Photos/NoDate/NoLocation/Unknown/
     └── 00000000_000000_1.jpg
 ```
 

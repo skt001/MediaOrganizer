@@ -8,7 +8,8 @@ if defined LOG_FILE (
     call "%~f0" put "---- %~2 ----"
     exit /b 0
 )
-set "LOG_DIR=%~dp0logs"
+if not defined ROOT set "ROOT=%~dp0..\"
+set "LOG_DIR=%ROOT%logs"
 if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
 for /f %%I in ('powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-Date -Format yyyyMMdd_HHmmss"') do set "LOG_STAMP=%%I"
 set "LOG_FILE=%LOG_DIR%\%LOG_STAMP%_%~2.log"

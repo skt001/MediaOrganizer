@@ -1,2 +1,4 @@
 /logs/
+/bin/*.exe
+/bin/*.EXE
 _folder_list.tmp

@@ -1,0 +1,11 @@
+Place these files in this folder (bin/):
+
+  czkawka_cli.exe
+  exiftool.exe
+
+Download:
+  https://github.com/qarmin/czkawka/releases
+  https://exiftool.org/
+
+exiftool.exe 12.82 or later is required (Geolocation support).
+Do not commit the .exe files.

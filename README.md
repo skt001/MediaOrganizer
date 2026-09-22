@@ -9,7 +9,8 @@ A Windows batch tool to automatically organize photos and videos by date, shooti
 - **Duplicate removal** — exact hash matching + optional similar image detection (czkawka)
 - **Metadata-based sorting** — organizes files into `Photos/` and `Movies/` by date, location, and device name
 - **Priority rules** — falls back gracefully: `DateTimeOriginal` → `CreateDate` → `FileModifyDate` → `NoDate`
-- **Location folders** — when GPS is present, ExifTool Geolocation adds `country/region/city`; otherwise `NoLocation` (nearest city, not a street address). Names come from the standard ExifTool database (English, e.g. `Japan/Tokyo/Shibuya`)
+- **Location folders** — when GPS is present, ExifTool Geolocation adds `country/region/city` (missing region/city levels are skipped); otherwise a single `NoLocation` folder (nearest city, not a street address). Names come from the standard ExifTool database (English, e.g. `Japan/Tokyo/Shibuya`)
+- **Device folders** — photos use `Model`, videos use `Make`; missing values become `Unknown`
 - **Safe lowercase rename** — works correctly on NTFS via temporary name (avoids the silent no-op bug)
 - **Empty folder cleanup** — removes leftover empty directories after sorting
 - **Run all at once** — single `run_all.bat` to execute all steps in order
@@ -30,19 +31,28 @@ Place the `MediaOrganizer/` folder next to your data folders:
     ├── step2_organize.bat
     ├── step3_cleanup.bat
     ├── step4_lowercase.bat
-    ├── czkawka_cli.exe    ← place here
-    ├── exiftool.exe       ← place here
-    ├── logs/              ← created automatically
-    └── rules/
-        ├── photo/
-        └── video/
+    ├── README.md
+    ├── LICENSE
+    ├── bin/               ← place executables here
+    │   ├── PUT_EXECUTABLES_HERE.txt
+    │   ├── czkawka_cli.exe
+    │   └── exiftool.exe
+    ├── lib/               ← rules, config, helpers
+    │   ├── exiftool.config
+    │   ├── log_lib.bat
+    │   ├── cleanup_folder.ps1
+    │   ├── lowercase_folder.ps1
+    │   └── rules/
+    │       ├── photo/
+    │       └── video/
+    └── logs/              ← created automatically
 ```
 
 ## Requirements
 
 - Windows 10 or later
-- [exiftool.exe](https://exiftool.org/) 12.82 or later — place in `MediaOrganizer/` (Geolocation support required)
-- [czkawka_cli.exe](https://github.com/qarmin/czkawka/releases) — place in `MediaOrganizer/`
+- [exiftool.exe](https://exiftool.org/) 12.82 or later — place in `MediaOrganizer/bin/` (Geolocation support required)
+- [czkawka_cli.exe](https://github.com/qarmin/czkawka/releases) — place in `MediaOrganizer/bin/`
 
 ## Usage
 
@@ -83,10 +93,10 @@ Movies/
 Without GPS:
 
 ```
-Photos/2024-03/NoLocation/Unknown/Unknown/iPhone 15 Pro/
+Photos/2024-03/NoLocation/iPhone 15 Pro/
     └── 20240315_143022.jpg
 
-Photos/NoDate/NoLocation/Unknown/Unknown/Unknown/
+Photos/NoDate/NoLocation/Unknown/
     └── 00000000_000000_1.jpg
 ```
 
