@@ -2,10 +2,16 @@ Place these files in this folder (bin/):
 
   czkawka_cli.exe
   exiftool.exe
+  exiftool_files/     (required next to exiftool.exe)
 
-Download:
+ExifTool (Windows):
+  1. Download the Windows package from https://exiftool.org/
+  2. Rename exiftool(-k).exe to exiftool.exe
+  3. Copy BOTH exiftool.exe and the exiftool_files folder here.
+     The folder contains Perl and DLLs. ExifTool will not run without it.
+  4. Version 12.82 or later is required (Geolocation support).
+
+czkawka:
   https://github.com/qarmin/czkawka/releases
-  https://exiftool.org/
 
-exiftool.exe 12.82 or later is required (Geolocation support).
-Do not commit the .exe files.
+Do not commit the .exe files or exiftool_files/.

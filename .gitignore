@@ -1,4 +1,5 @@
 /logs/
 /bin/*.exe
 /bin/*.EXE
+/bin/exiftool_files/
 _folder_list.tmp

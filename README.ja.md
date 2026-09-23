@@ -34,7 +34,8 @@
     ├── bin/               ← exe をここに置く
     │   ├── PUT_EXECUTABLES_HERE.txt
     │   ├── czkawka_cli.exe
-    │   └── exiftool.exe
+    │   ├── exiftool.exe
+    │   └── exiftool_files/  ← exiftool.exe の隣に必須（Perl/DLL）
     ├── lib/               ← ルール・設定・ヘルパー
     │   ├── exiftool.config
     │   ├── log_lib.bat
@@ -49,7 +50,10 @@
 ## 必要なもの
 
 - Windows 10 以降
-- [exiftool.exe](https://exiftool.org/) 12.82 以降 — `MediaOrganizer/bin/` に配置（Geolocation 機能が必要）
+- [ExifTool](https://exiftool.org/) 12.82 以降（Geolocation 機能が必要）— `MediaOrganizer/bin/` に配置:
+  1. [exiftool.org](https://exiftool.org/) から Windows 版をダウンロード
+  2. `exiftool(-k).exe` を `exiftool.exe` にリネーム
+  3. `exiftool.exe` と `exiftool_files` フォルダの**両方**を `bin/` にコピー（フォルダ内は Perl と DLL。無いと ExifTool は動かない）
 - [czkawka_cli.exe](https://github.com/qarmin/czkawka/releases) — `MediaOrganizer/bin/` に配置
 
 ## 使い方

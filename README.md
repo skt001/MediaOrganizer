@@ -36,7 +36,8 @@ Place the `MediaOrganizer/` folder next to your data folders:
     ├── bin/               ← place executables here
     │   ├── PUT_EXECUTABLES_HERE.txt
     │   ├── czkawka_cli.exe
-    │   └── exiftool.exe
+    │   ├── exiftool.exe
+    │   └── exiftool_files/  ← required next to exiftool.exe (Perl/DLLs)
     ├── lib/               ← rules, config, helpers
     │   ├── exiftool.config
     │   ├── log_lib.bat
@@ -51,7 +52,10 @@ Place the `MediaOrganizer/` folder next to your data folders:
 ## Requirements
 
 - Windows 10 or later
-- [exiftool.exe](https://exiftool.org/) 12.82 or later — place in `MediaOrganizer/bin/` (Geolocation support required)
+- [ExifTool](https://exiftool.org/) 12.82 or later (Geolocation support required) — place in `MediaOrganizer/bin/`:
+  1. Download the Windows package from [exiftool.org](https://exiftool.org/)
+  2. Rename `exiftool(-k).exe` to `exiftool.exe`
+  3. Copy **both** `exiftool.exe` and the `exiftool_files` folder into `bin/` (the folder has Perl and DLLs; ExifTool will not run if it is missing)
 - [czkawka_cli.exe](https://github.com/qarmin/czkawka/releases) — place in `MediaOrganizer/bin/`
 
 ## Usage

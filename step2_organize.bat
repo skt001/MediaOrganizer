@@ -23,6 +23,10 @@ if not exist "%EXIFTOOL%" (
     call "%LIB%log_lib.bat" fail "Error: exiftool.exe not found: %EXIFTOOL%"
     exit /b 1
 )
+if not exist "%BIN%exiftool_files\" (
+    call "%LIB%log_lib.bat" fail "Error: exiftool_files folder not found next to exiftool.exe: %BIN%exiftool_files"
+    exit /b 1
+)
 if not exist "%RULES_PHOTO%" (
     call "%LIB%log_lib.bat" fail "Error: rules\photo folder not found"
     exit /b 1
