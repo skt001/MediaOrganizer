@@ -28,6 +28,7 @@ if /i not "%CONFIRM%"=="Y" (
 )
 
 call "%LIB%log_lib.bat" put ""
+set CHAINED=1
 call "%LIB%log_lib.bat" put "---- Step 1 start ----"
 call "%ROOT%step1_dedupe.bat"
 if errorlevel 1 (

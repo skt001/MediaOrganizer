@@ -32,8 +32,8 @@ call "%LIB%log_lib.bat" put "===================================="
 call "%LIB%log_lib.bat" put ""
 
 REM ==== [1/2] Exact-hash duplicates ====
-call "%LIB%log_lib.bat" put "[1/2] Removing exact-hash duplicate files"
-set LOG_CMD="%CZKAWKA%" dup --directories "%UNSORTED%" -D AEB -W
+call "%LIB%log_lib.bat" put "[1/2] Removing exact-hash duplicate files (keep oldest)"
+set LOG_CMD="%CZKAWKA%" dup --directories "%UNSORTED%" -D AEO -W
 call "%LIB%log_lib.bat" exec
 if errorlevel 1 (
     call "%LIB%log_lib.bat" fail "Error: exact-hash duplicate removal failed."
@@ -43,23 +43,35 @@ call "%LIB%log_lib.bat" put ""
 
 REM ==== [2/2] Visually similar images (confirm first) ====
 call "%LIB%log_lib.bat" put "[2/2] Remove visually similar images"
+if defined CHAINED (
+    call "%LIB%log_lib.bat" put "Skipped (chained run)."
+    goto :similar_done
+)
 call "%LIB%log_lib.bat" put ""
 call "%LIB%log_lib.bat" put " Warning: This may also match exposure/crop variants."
 call "%LIB%log_lib.bat" put " Review the list before deleting."
 call "%LIB%log_lib.bat" put ""
-call "%LIB%log_lib.bat" put " [D] Dry run (list only, no delete)"
-call "%LIB%log_lib.bat" put " [Y] Delete"
-call "%LIB%log_lib.bat" put " [S] Skip this step"
+call "%LIB%log_lib.bat" put " [1] List only (no delete)"
+call "%LIB%log_lib.bat" put " [2] Keep oldest"
+call "%LIB%log_lib.bat" put " [3] Keep newest"
+call "%LIB%log_lib.bat" put " [4] Keep biggest"
+call "%LIB%log_lib.bat" put " [5] Keep smallest"
+call "%LIB%log_lib.bat" put " [6] Skip this step"
 call "%LIB%log_lib.bat" put ""
-set /p CHOICE="Choose (D/Y/S): "
+set "CHOICE="
+set /p CHOICE="Choose (1/2/3/4/5/6, blank=skip): "
 call "%LIB%log_lib.bat" put "Choice: %CHOICE%"
 
-if /i "%CHOICE%"=="D" goto :similar_dry
-if /i "%CHOICE%"=="Y" goto :similar_delete
-if /i "%CHOICE%"=="S" (
-    call "%LIB%log_lib.bat" put "Skipped similar-image deletion."
-    goto :similar_done
-)
+if "%CHOICE%"=="1" goto :similar_dry
+if "%CHOICE%"=="2" set "SIM_METHOD=AEO"
+if "%CHOICE%"=="2" goto :similar_delete
+if "%CHOICE%"=="3" set "SIM_METHOD=AEN"
+if "%CHOICE%"=="3" goto :similar_delete
+if "%CHOICE%"=="4" set "SIM_METHOD=AEB"
+if "%CHOICE%"=="4" goto :similar_delete
+if "%CHOICE%"=="5" set "SIM_METHOD=AES"
+if "%CHOICE%"=="5" goto :similar_delete
+call "%LIB%log_lib.bat" put "Skipped similar-image deletion."
 goto :similar_done
 
 :similar_dry
@@ -71,12 +83,12 @@ if errorlevel 1 (
     exit /b 1
 )
 call "%LIB%log_lib.bat" put ""
-call "%LIB%log_lib.bat" put "Dry run done. Review the list, then run again and choose Y."
+call "%LIB%log_lib.bat" put "Dry run done. Review the list, then run again and choose 2-5."
 goto :similar_done
 
 :similar_delete
-call "%LIB%log_lib.bat" put "Deleting similar images..."
-set LOG_CMD="%CZKAWKA%" image --directories "%UNSORTED%" -D AEB -W
+call "%LIB%log_lib.bat" put "Deleting similar images (-D %SIM_METHOD%)..."
+set LOG_CMD="%CZKAWKA%" image --directories "%UNSORTED%" -D %SIM_METHOD% -W
 call "%LIB%log_lib.bat" exec
 if errorlevel 1 (
     call "%LIB%log_lib.bat" fail "Error: similar-image removal failed."
@@ -93,5 +105,5 @@ call "%LIB%log_lib.bat" put "===================================="
 call "%LIB%log_lib.bat" put "End: %DATE% %TIME%"
 call "%LIB%log_lib.bat" put "Log: %LOG_FILE%"
 call "%LIB%log_lib.bat" put ""
-pause
+if not defined CHAINED pause
 exit /b 0

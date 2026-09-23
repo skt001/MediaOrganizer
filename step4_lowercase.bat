@@ -64,7 +64,7 @@ call "%LIB%log_lib.bat" put "===================================="
 call "%LIB%log_lib.bat" put "End: %DATE% %TIME%"
 call "%LIB%log_lib.bat" put "Log: %LOG_FILE%"
 call "%LIB%log_lib.bat" put ""
-pause
+if not defined CHAINED pause
 exit /b 0
 
 

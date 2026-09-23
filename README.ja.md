@@ -59,7 +59,7 @@
 
 | スクリプト | 内容 |
 |-----------|------|
-| `step1_dedupe.bat` | 重複ファイル削除 |
+| `step1_dedupe.bat` | 重複削除（完全一致は最古を残す。類似画像の確認は `run_all.bat` ではスキップ） |
 | `step2_organize.bat` | 写真・動画をメタデータで振り分け |
 | `step3_cleanup.bat` | 空フォルダ削除 |
 | `step4_lowercase.bat` | ファイル名を小文字化 |

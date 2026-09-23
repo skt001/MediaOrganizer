@@ -61,7 +61,7 @@ Place the `MediaOrganizer/` folder next to your data folders:
 
 | Script | Description |
 |--------|-------------|
-| `step1_dedupe.bat` | Remove duplicate files |
+| `step1_dedupe.bat` | Remove duplicate files (exact hash keeps oldest; similar-image prompt is skipped by `run_all.bat`) |
 | `step2_organize.bat` | Sort photos and videos by metadata |
 | `step3_cleanup.bat` | Remove empty folders |
 | `step4_lowercase.bat` | Lowercase all filenames |
