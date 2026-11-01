@@ -1,5 +1,7 @@
 # MediaOrganizer
 
+[English README](README.md)
+
 [exiftool](https://exiftool.org/) と [czkawka](https://github.com/qarmin/czkawka) を使って、写真・動画を日付・撮影地・機種名で自動整理する Windows バッチツールです。
 
 ## 機能

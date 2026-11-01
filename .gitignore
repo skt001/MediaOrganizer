@@ -3,3 +3,8 @@
 /bin/*.EXE
 /bin/exiftool_files/
 _folder_list.tmp
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
